@@ -51,17 +51,17 @@ class PDFcreator:
         self._pdf.output(os.path.join(self.pdf_dir, self.pdf_name))
         print(f"PDF file '{self.pdf_name}' has been created.")
 
-    def build_pdf(self, total_aggregates, monthly_aggregates):
+    def build_pdf(self, total_aggregate, monthly_aggregate):
         """Build pdf structure."""
         # Add page with total aggregates
         self._pdf.add_page()
         self._pdf.set_font("Arial", size=10)
-        self._create_table(total_aggregates, "Totals")
+        self._create_table(total_aggregate, "Totals")
 
         # Add pages with monthly aggregates
         self._pdf.add_page()
         self._pdf.set_font("Arial", size=10)
-        for expense_type, df in monthly_aggregates.items():
+        for expense_type, df in monthly_aggregate.items():
             self._create_table(df, expense_type)
 
         # Write file
