@@ -18,7 +18,6 @@ class PDFcreator:
 
     def _create_table(self, df, table_name):
         """Create table from a dataframe under a certain table_name."""
-
         self._pdf.cell(200, 10, txt=f"{table_name}", ln=True, align="C")
         self._pdf.ln(5)
 
