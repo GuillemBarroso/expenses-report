@@ -2,14 +2,15 @@ from expenses_report.calcs import Calcs
 from expenses_report.pdf_creator import PDFcreator
 from expenses_report.reader import Reader
 
-pdf_dir = "./"
-pdf_name = "expenses_test_report.pdf"
-
-# Load data from Excel sheet
+# User-input parameters
 expenses_dir = r"data"
 expenses_file_name = "expenses.xlsx"
 categories = ["Category1", "Category2"]
 columns_to_read = ["Date", "Import"]
+pdf_dir = "./"
+pdf_name = "expenses_test_report.pdf"
+
+# Load data from Excel sheet
 reader = Reader(expenses_dir, expenses_file_name)
 expenses = reader.from_excel(categories, columns_to_read)
 
