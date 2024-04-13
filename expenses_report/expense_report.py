@@ -3,6 +3,7 @@ import os
 
 import pandas as pd
 
+from expenses_report.calcs import Calcs
 from expenses_report.pdf_creator import PDFcreator
 
 
@@ -34,41 +35,9 @@ for sheet_name in excel_file.sheet_names:
         # Store the DataFrame in the dictionary with the sheet name as key
         expenses[sheet_name] = df
 
-# Compute monthly aggregates for each dataframe in "expenses"
-monthly_aggregates = {}
-for dataframe_name in expenses:
-    # Loop over dataframes
-    df = expenses[dataframe_name]
-    # Group by month and year, and sum the 'Import' values for each group
-    monthly_aggregate = (
-        df.groupby(
-            [df["Date"].dt.year.rename("Year"), df["Date"].dt.month.rename("Month")]
-        )["Import"]
-        .sum()
-        .reset_index()
-    )
-
-    # Rename columns for clarity
-    monthly_aggregate.columns = ["Year", "Month", "Monthly Import"]
-
-    # Force column types
-    monthly_aggregate["Year"] = monthly_aggregate["Year"].astype(int)
-    monthly_aggregate["Month"] = monthly_aggregate["Month"].apply(
-        convert_month_numbers_to_names
-    )
-    monthly_aggregate["Monthly Import"] = (
-        monthly_aggregate["Monthly Import"].astype(float).round(2)
-    )
-    # Store dataframe in dictionary
-    monthly_aggregates[dataframe_name] = monthly_aggregate
-
-# Compute total expenses
-rows = []
-for dataframe_name in expenses:
-    total = expenses[dataframe_name]["Import"].sum().astype(float).round(2)
-    rows.append({"Category": dataframe_name, "Total import": total})
-
-total_aggregates = pd.DataFrame(rows)
+calcs = Calcs(expenses)
+total_aggregate = calcs.total_aggregate()
+monthly_aggregate = calcs.monthly_aggregate()
 
 pdf_creator = PDFcreator(pdf_dir, pdf_name)
-pdf_creator.build_pdf(total_aggregates, monthly_aggregates)
+pdf_creator.build_pdf(total_aggregate, monthly_aggregate)
