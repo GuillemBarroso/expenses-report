@@ -49,7 +49,6 @@ class PDFcreator:
     def _save_pdf(self):
         """Write pdf file under specified directory and name."""
         self._pdf.output(os.path.join(self.pdf_dir, self.pdf_name))
-
         print(f"PDF file '{self.pdf_name}' has been created.")
 
     def build_pdf(self, total_aggregates, monthly_aggregates):
