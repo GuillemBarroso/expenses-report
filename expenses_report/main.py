@@ -1,16 +1,9 @@
-import calendar
 import os
 
 import pandas as pd
 
 from expenses_report.calcs import Calcs
 from expenses_report.pdf_creator import PDFcreator
-
-
-# Function to convert month numbers to month names
-def convert_month_numbers_to_names(month_number):
-    return calendar.month_name[month_number]
-
 
 pdf_dir = "./"
 pdf_name = "expenses_test_report.pdf"
@@ -35,9 +28,11 @@ for sheet_name in excel_file.sheet_names:
         # Store the DataFrame in the dictionary with the sheet name as key
         expenses[sheet_name] = df
 
+# Compute total and monthly aggregates
 calcs = Calcs(expenses)
 total_aggregate = calcs.total_aggregate()
 monthly_aggregate = calcs.monthly_aggregate()
 
+# Create PDF report
 pdf_creator = PDFcreator(pdf_dir, pdf_name)
 pdf_creator.build_pdf(total_aggregate, monthly_aggregate)

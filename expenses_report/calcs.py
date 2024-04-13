@@ -14,6 +14,7 @@ class Calcs:
 
     @staticmethod
     def _convert_month_numbers_to_names(month_number):
+        """Convert months from integer ID to string name; 1 -> January."""
         return calendar.month_name[month_number]
 
     def monthly_aggregate(self):
